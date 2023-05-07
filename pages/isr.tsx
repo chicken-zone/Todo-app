@@ -6,37 +6,34 @@ import { Layout } from '../components/Layout'
 import { supabase } from '../utils/supabase'
 import { Task, Notice } from '../types/types'
 
-// npm run devの場合、ssgとisrのページもサーバーサイドレンダリングされてしまう
-// プロダクションモードでないと確認できないnpm run build
+// ssgと同じ記述になるがpropsにrevalidateの属性を追加する必要がある
+// Next.jsにてprefetchの挙動変更があり
+// ver 12.1以前 ISR pageへのLink ホバー時にISRが発動
+// ver 12.2以降  ISR pageへのLink ホバー時にISRが発動せずに、
+// 実際にクリックされた時だけISRが発動する。
 
-// supabaseにアクセスしデータを取得してくる処理
 export const getStaticProps: GetStaticProps = async () => {
   console.log('getStaticProps/ssg invoked')
   const { data: tasks } = await supabase
-    // どのテーブルから取得するか
     .from('todos')
-    // ＊全てのタスクを取得する
     .select('*')
-    // 上から下に向かって古いものから新しいものを取得する
     .order('created_at', { ascending: true })
   const { data: notices } = await supabase
     .from('notices')
     .select('*')
     .order('created_at', { ascending: true })
-  return { props: { tasks, notices } }
+  return { props: { tasks, notices }, revalidate: 5 }
 }
 
-// propsのデータ型を定義する
 type StaticProps = {
   tasks: Task[]
   notices: Notice[]
 }
 
-const Ssg: NextPage<StaticProps> = ({ tasks, notices }) => {
-  const router = useRouter()
+const Isr: NextPage<StaticProps> = ({ tasks, notices }) => {
   return (
-    <Layout title="SSG">
-      <p className="mb-3 text-blue-500">SSG</p>
+    <Layout title="ISR">
+      <p className="mb-3 text-indigo-500">ISR</p>
       <ul className="mb-3">
         {tasks.map((task) => {
           return (
@@ -55,14 +52,11 @@ const Ssg: NextPage<StaticProps> = ({ tasks, notices }) => {
           )
         })}
       </ul>
-      <Link href="/ssr" prefetch={false}>
+      {/* <Link href="/ssr" prefetch={false}>
         <a className="mb-3 text-xs">Link to ssr</a>
-      </Link>
-      <button className="mb-3 text-xs" onClick={() => router.push('/ssr')}>
-        Route to ssr
-      </button>
+      </Link> */}
     </Layout>
   )
 }
 
-export default Ssg
+export default Isr

@@ -6,7 +6,10 @@ import { Layout } from '../components/Layout'
 import { supabase } from '../utils/supabase'
 import { Task, Notice } from '../types/types'
 
-export const getStaticProps: GetServerSideProps = async () => {
+// SSGからSSRに変更する場合は
+// getStaticPropsからgetServerSidePropsに変更するだけ
+
+export const getServerSideProps: GetServerSideProps = async () => {
   console.log('getServerSideProps/ssr invoked')
   const { data: tasks } = await supabase
     .from('todos')

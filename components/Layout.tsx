@@ -6,6 +6,8 @@ type Title = {
   title: string
   children: ReactNode
 }
+// VFCはReact.FCに置き換えてジェネリッスクの形で割り当てる
+// propsは{ children, title = 初期値'Todo app' }で渡す
 
 export const Layout: React.FC<Title> = ({ children, title = 'Todo app' }) => {
   return (
