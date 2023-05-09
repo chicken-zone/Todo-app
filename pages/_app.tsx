@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import type { AppProps, NextWebVitalsMetric } from 'next/app'
 
 //webvitalを検知する処理
+// Hydrationのスタート時間と終了時間を出す処理
 export function reportWebVitals(metric: NextWebVitalsMetric) {
   switch (metric.name) {
     case 'FCP':
