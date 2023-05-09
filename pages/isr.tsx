@@ -13,7 +13,7 @@ import { Task, Notice } from '../types/types'
 // 実際にクリックされた時だけISRが発動する。
 
 export const getStaticProps: GetStaticProps = async () => {
-  console.log('getStaticProps/ssg invoked')
+  console.log('getStaticProps/isr invoked')
   const { data: tasks } = await supabase
     .from('todos')
     .select('*')
@@ -31,6 +31,7 @@ type StaticProps = {
 }
 
 const Isr: NextPage<StaticProps> = ({ tasks, notices }) => {
+  const router = useRouter()
   return (
     <Layout title="ISR">
       <p className="mb-3 text-indigo-500">ISR</p>
@@ -52,9 +53,12 @@ const Isr: NextPage<StaticProps> = ({ tasks, notices }) => {
           )
         })}
       </ul>
-      {/* <Link href="/ssr" prefetch={false}>
+      <Link href="/ssr" prefetch={false}>
         <a className="mb-3 text-xs">Link to ssr</a>
-      </Link> */}
+      </Link>
+      <button className="mb-3 text-xs" onClick={() => router.push('/ssr')}>
+        Route to ssr
+      </button>
     </Layout>
   )
 }
