@@ -59,6 +59,7 @@ export const useMutateTask = () => {
       },
     }
   )
+  // 引数で削除したいタスクのIDを受け取る
   const deleteTaskMutation = useMutation(
     async (id: string) => {
       const { data, error } = await supabase.from('todos').delete().eq('id', id)
@@ -82,4 +83,5 @@ export const useMutateTask = () => {
       },
     }
   )
+  return { deleteTaskMutation, createTaskMutation, updateTaskMutation }
 }
