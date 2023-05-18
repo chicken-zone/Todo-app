@@ -3,7 +3,7 @@ import { supabase } from '../utils/supabase'
 import useStore from '../store'
 import { useMutateTask } from '../hooks/useMutateTask'
 
-const TaskForm: React.FC = () => {
+export const TaskForm: React.FC = () => {
   const { editedTask } = useStore()
   const update = useStore((state) => state.updateEditedTask)
   const { createTaskMutation, updateTaskMutation } = useMutateTask()
@@ -40,5 +40,3 @@ const TaskForm: React.FC = () => {
     </form>
   )
 }
-
-export default TaskForm
