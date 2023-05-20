@@ -8,6 +8,8 @@ import { supabase } from '../utils/supabase'
 import { Layout } from '../components/Layout'
 import { TaskList } from '../components/TaskList'
 import { TaskForm } from '../components/TaskForm'
+import { NoticeForm } from '../components/NoticeForm'
+import { NoticeList } from '../components/NoticeList'
 
 // Auth機能の実装
 // サインアウトのボタンが押されたときにサインアウトされる
@@ -29,6 +31,13 @@ const Dashboard: NextPage = () => {
           </div>
           <TaskForm />
           <TaskList />
+        </div>
+        <div>
+          <div className="my-3 flex justify-center">
+            <StatusOnlineIcon className="h-8 w-8 text-blue-500" />
+          </div>
+          <NoticeForm />
+          <NoticeList />
         </div>
       </div>
     </Layout>
