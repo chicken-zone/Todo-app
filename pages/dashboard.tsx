@@ -10,13 +10,18 @@ import { TaskList } from '../components/TaskList'
 import { TaskForm } from '../components/TaskForm'
 import { NoticeForm } from '../components/NoticeForm'
 import { NoticeList } from '../components/NoticeList'
+import { useQueryClient } from 'react-query'
 
 // Auth機能の実装
 // サインアウトのボタンが押されたときにサインアウトされる
 
+// queryClientの部分でログアウト時にキャッシュを削除する処理
 const Dashboard: NextPage = () => {
+  const queryClient = useQueryClient()
   const signOut = () => {
     supabase.auth.signOut()
+    queryClient.removeQueries('todos')
+    queryClient.removeQueries('notices')
   }
   return (
     <Layout title="Dashboard">
